@@ -335,21 +335,30 @@ vector<int> Graph::greedyBFS(int source, int numVertices, int target, bool backt
    //for (int i = 0; i < graph[source].size(); i++) {
     pair<int, int> previous;
     pair<int, int> current = lowestAdjacent(source, count);
+    //repeat until target is found
        while(current.first != target) {
+           // if we have already backtracked, go to the nearest node, not second nearest
            if(backtrack == true) {
                count = 0;
                backtrack = false;
            }
+           //keep track of path
            path += " " + to_string(current.first);
+           //keep track of distance
            distance += (current.second);
+           //if we have reached a dead-end...
            if(graph[current.first].size() == 0) {
+               //increment "count" so that we will visit the second-closest node
                count++;
+               //set current node equal to previous node
                current = previous;
            }
            previous = current;
+           //a flag that alerts that a backtrack has occurred
            if(previous == current) {
                backtrack = true;
            }
+           //go to the next closest node (unless the closest node has already been visited)
            current = lowestAdjacent(current.first, count);
            
        }
